@@ -19,8 +19,7 @@ client.connect(err => {
 });
 
 app.get("/", (req, res) => {
-    res.send("Hello inventory mama! Moja hobbe!!!");
-    res.redirect('/');
+    res.send("Hello inventory management system!!!");
   });
 
   app.listen(process.env.PORT || port);
