@@ -10,12 +10,20 @@ app.use(cors());
 
 const port = 5000;
 
-const uri = "mongodb+srv://devSquad:<password>@cluster0.133bl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.suylw.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
+  const brandCollection = client.db("inventoryManagement").collection("brands");
+
+  //adding brands
+  app.post("/brands", (req, res) => {
+    const brand = req.body;
+    console.log(brand);
+    brandCollection.insertOne(brand)
+    .then((result) => {
+      res.send(result.insertedCount > 0);
+    })
+  });
 });
 
 app.get("/", (req, res) => {
