@@ -14,6 +14,8 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const brandCollection = client.db("inventoryManagement").collection("brands");
+  const categoryCollection = client.db("inventoryManagement").collection("categories");
+  const storeCollection = client.db("inventoryManagement").collection("stores");
 
   //adding brands
   app.post("/brands", (req, res) => {
@@ -24,6 +26,32 @@ client.connect(err => {
       res.send(result.insertedCount > 0);
     })
   });
+
+  //adding categories
+  app.post("/categories", (req, res) => {
+    const category = req.body;
+    console.log(category);
+    categoryCollection.insertOne(category)
+    .then((result) => {
+      res.send(result.insertedCount > 0);
+    })
+  })
+
+  //adding stores
+  app.post("/stores", (req, res) => {
+    const store = req.body;
+    console.log(store);
+    store.createdAt = new Date();
+    store.updatedAt = new Date();
+    storeCollection.insertOne(store)
+    .then((result) => {
+      res.send(result.insertedCount > 0);
+    })
+  })
+
+
+
+
 });
 
 app.get("/", (req, res) => {
