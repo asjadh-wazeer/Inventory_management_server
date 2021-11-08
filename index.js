@@ -16,6 +16,7 @@ client.connect(err => {
   const brandCollection = client.db("inventoryManagement").collection("brands");
   const categoryCollection = client.db("inventoryManagement").collection("categories");
   const storeCollection = client.db("inventoryManagement").collection("stores");
+  const attributeCollection = client.db("inventoryManagement").collection("attribute");
 
   //adding brands
   app.post("/brands", (req, res) => {
@@ -49,10 +50,21 @@ client.connect(err => {
     })
   })
 
+  //adding attributes
+  app.post("/attributes", (req, res) => {
+    const attribute = req.body;
+    console.log(attribute);
+    attributeCollection.insertOne(attribute)
+    .then((result) => {
+      res.send(result.insertedCount > 0);
+    })
+  })
 
 
 
 });
+
+// console.log(process.env.DB_NAME);
 
 app.get("/", (req, res) => {
     res.send("Hello inventory management system!!!");
