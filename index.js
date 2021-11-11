@@ -29,6 +29,14 @@ client.connect(err => {
         })
 })
 
+  //reading brands
+  app.get('/getBrands', (req, res) => {
+    brandCollection.find({}).toArray((err, documents) => {
+      res.send(documents);
+      console.log(err);
+    })
+  })
+
   //adding categories
   app.post('/categories', (req, res) => {
     const category = req.body;
@@ -38,6 +46,14 @@ client.connect(err => {
             res.send(result.insertedCount > 0)
         })
 })
+
+  //reading categories
+  app.get('/getCategories', (req, res) => {
+    categoryCollection.find({}).toArray((err, documents) => {
+      res.send(documents);
+      console.log(err);
+    })
+  })
 
   //adding stores
   app.post("/stores", (req, res) => {
@@ -51,6 +67,14 @@ client.connect(err => {
     })
   })
 
+  //reading stores
+  app.get("/getStores", (req, res) => {
+    storeCollection.find({}).toArray((err, documents) => {
+      res.send(documents);
+      console.log(err);
+    })
+  })
+
   //adding attributes
   app.post("/attributes", (req, res) => {
     const attribute = req.body;
@@ -58,6 +82,14 @@ client.connect(err => {
     attributeCollection.insertOne(attribute)
     .then((result) => {
       res.send(result.insertedCount > 0);
+    })
+  })
+
+  //reading attributes
+  app.get("/getAttributes", (req, res) => {
+    attributeCollection.find({}).toArray((err, documents) => {
+      res.send(documents);
+      console.log(err);
     })
   })
 
