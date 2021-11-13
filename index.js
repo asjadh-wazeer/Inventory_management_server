@@ -25,6 +25,7 @@ client.connect((err) => {
   const attributeCollection = client
     .db("inventoryManagement")
     .collection("attribute");
+  const productCollection = client.db("inventoryManagement").collection("products");
 
   //adding brands
   app.post("/addBrand", (req, res) => {
@@ -95,6 +96,27 @@ client.connect((err) => {
       console.log(err);
     });
   });
+
+  //adding products
+  app.post("/products", (req, res) => {
+    const product = req.body;
+    console.log(product);
+    product.createdAt = new Date();
+    product.updatedAt = new Date();
+    productCollection.insertOne(product).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
+  })
+
+  //reading products
+  app.get("/getProducts", (req, res) => {
+    productCollection.find({}).toArray((err, documents) => {
+      res.send(documents);
+      console.log(err);
+    });
+  })
+
+  
 
   // delete specific brand from database
   app.delete("/deleteBrand/:id", (req, res) => {
