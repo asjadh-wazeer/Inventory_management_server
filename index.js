@@ -98,7 +98,7 @@ client.connect((err) => {
   });
 
   //adding products
-  app.post("/products", (req, res) => {
+  app.post("/addProduct", (req, res) => {
     const product = req.body;
     console.log(product);
     product.createdAt = new Date();
@@ -156,6 +156,15 @@ client.connect((err) => {
         // console.log(result.deletedCount)
         res.send(result.deletedCount > 0);
       });
+  })
+
+  // delete specific product from database
+  app.delete("/deleteProduct/:id", (req, res) => {
+    productCollection.deleteOne({ _id: ObjectId(req.params.id) })
+    .then((result) => {
+      // console.log(result.deletedCount)
+      res.send(result.deletedCount > 0);
+    })
   })
 
 
