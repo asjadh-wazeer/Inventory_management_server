@@ -26,6 +26,7 @@ client.connect((err) => {
     .db("inventoryManagement")
     .collection("attribute");
   const productCollection = client.db("inventoryManagement").collection("products");
+  const orderCollection = client.db("inventoryManagement").collection("orders");
 
   //adding brands
   app.post("/addBrand", (req, res) => {
@@ -111,6 +112,25 @@ client.connect((err) => {
   //reading products
   app.get("/getProducts", (req, res) => {
     productCollection.find({}).toArray((err, documents) => {
+      res.send(documents);
+      console.log(err);
+    });
+  })
+
+  //adding orders
+  app.post("/addOrder", (req, res) => {
+    const order = req.body;
+    console.log(order);
+    order.createdAt = new Date();
+    order.updatedAt = new Date();
+    orderCollection.insertOne(order).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
+  })
+
+  //reading orders
+  app.get("/getOrders", (req, res) => {
+    orderCollection.find({}).toArray((err, documents) => {
       res.send(documents);
       console.log(err);
     });
